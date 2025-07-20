@@ -1,46 +1,101 @@
-<form action="register.php" method="post">
-    Full Name:<input type="text"name="fullname">
-    <br>
-    <br>
-    Email Address:<input type="text"name="email">
-    <br>
-    <br>
-    Password:<input type="password"name="password">
-    <br>
-    <br>
-    ConfirmPassword:<input type="password"name="confirmpassword">
-    <br>
-    <br>
-    Gender:
-    <br>
-    <input type="radio"name="gender" id="male"value="Male">
-    <label for="male">Male</label>
-    <br>
-    <input type="radio"name="gender" id="female" value="Female">
-    <label for="female">Female</label>
-    <br>
-    <br>
-    <label for="Hobbies">Hobbies:</label>
-    <br>
-    <input type="checkbox"name="Hobbies[]" id="reading" value="reading">
-    <label for="reading">Reading</label>
-    <br>
-    <input type="checkbox"name="Hobbies[]" id="traveling" value="traveling">
-    <label for="traveling">Traveling</label>
-    <br>
-    <input type="checkbox"name="Hobbies[]" id="sports" value="sports">
-    <label for="sports">Sports</label>
-    <br>
-    <br>
-    <label for="country">Select Country</label>
-    <select name="country">
-        <option value="Egypt">Egypt</option>
-        <option value="Usa">usa</option>
-        <option value="Morocco">Morocco</option>
-        <option value="France">France</option>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Registeration Page
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 450px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 32px 24px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h1 {
+            color: #2d3a4b;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        label, input[type="radio"], input[type="checkbox"] {
+            margin-top: 8px;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 95%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        input[type="submit"] {
+            background: #4f8cff;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.2s;
+        }
+        input[type="submit"]:hover {
+            background: #2563eb;
+        }
+        .form-section {
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<h1> Registeration</h1>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
 
-    </select>
-    <br>
-    <br>
-    <input type="submit"name="submit" value="Submit">
+    if (error === 'pass_mismatch') {
+        alert("Password and Confirm Password do not match!");
+    }
+</script>
+<form action="register.php" method="post">
+    <div class="form-section">Full Name:<input type="text" name="fullname"></div>
+    <div class="form-section">Email Address:<input type="text" name="email"></div>
+    <div class="form-section">Password:<input type="password" name="password"></div>
+    <div class="form-section">Confirm Password:<input type="password" name="confirmpassword"></div>
+    <div class="form-section">Gender:<br>
+        <input type="radio" name="gender" id="male" value="Male">
+        <label for="male">Male</label>
+        <input type="radio" name="gender" id="female" value="Female">
+        <label for="female">Female</label>
+    </div>
+    <div class="form-section">
+        <label for="Hobbies">Hobbies:</label><br>
+        <input type="checkbox" name="Hobbies[]" id="reading" value="reading">
+        <label for="reading">Reading</label>
+        <input type="checkbox" name="Hobbies[]" id="traveling" value="traveling">
+        <label for="traveling">Traveling</label>
+        <input type="checkbox" name="Hobbies[]" id="sports" value="sports">
+        <label for="sports">Sports</label>
+    </div>
+    <div class="form-section">
+        <label for="country">Select Country</label>
+        <select name="country">
+            <option value="Egypt">Egypt</option>
+            <option value="Usa">usa</option>
+            <option value="Morocco">Morocco</option>
+            <option value="France">France</option>
+        </select>
+    </div>
+    <input type="submit" name="submit" value="Submit">
 </form>
+</div>
+</body>
+</html>
