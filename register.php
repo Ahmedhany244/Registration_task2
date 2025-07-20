@@ -1,31 +1,19 @@
 <?php 
-include "User.php";
+include_once "User.php";
+include_once "Data_base.php";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-$fullname=htmlspecialchars( $_POST["fullname"]);
-$email=htmlspecialchars($_POST["email"]);
-$password=htmlspecialchars($_POST["password"]);
-$confirmpassword=htmlspecialchars($_POST["confirmpassword"]);
-$gender=htmlspecialchars($_POST["gender"]);
-$hobbies=array_map("htmlspecialchars",($_POST["Hobbies"]));
-$country=htmlspecialchars($_POST["country"]);
-if ($password==$confirmpassword){
-$user= new User($fullname,$email,$password,$gender,$hobbies,$country);
-}
-else{
-     header("Location: registration.html?error=pass_mismatch");
-   exit;
-}
-echo "Full Name: $fullname <br>";
-echo "Email: $email <br>";
-echo "Password: $password <br>";
-echo "Confirm Password: $confirmpassword <br>";
-echo "Gender: $gender <br>";
+$db=new Data_base();
+$user=$db->handlexss();
+echo "Full Name: $user->fullname <br>";
+echo "Email: $user->email <br>";
+echo "Password: $user->password <br>";
+echo "Gender: $user->gender <br>";
 echo "Hobbies: <br>";
 
-for ($x=0;$x<count($hobbies);$x++){
-     echo "- " . $hobbies[$x] . "<br>";
+for ($x=0;$x<count($user->hobbies);$x++){
+     echo "- " . $user->hobbies[$x] . "<br>";
 }
-echo "Country: $country <br>";
+echo "Country: $user->country <br>";
 $conn=new mysqli("localhost","root","");
 if ($conn->connect_error){
      die ("connection to database is failed ".$conn->connect_error);
@@ -59,16 +47,16 @@ else{
      else{
           $sql="INSERT INTO users (fullname,email,password,gender,country) values(?,?,?,?,?)";
           $stmt=$conn->prepare($sql);
-          $hashed_pass=password_hash($password,PASSWORD_DEFAULT);
-          $stmt->bind_param("sssss", $fullname, $email, $hashed_pass, $gender, $country);
+          $hashed_pass=password_hash($user->password,PASSWORD_DEFAULT);
+          $stmt->bind_param("sssss", $user->fullname,$user->email, $hashed_pass,$user->gender,$user->country);
           if(!$stmt->execute()){
                echo "failed to insert the data in userstable".$stmt->error;
           }
           $lastid=$conn->insert_id;
-         for ($x=0;$x<count($hobbies);$x++){
+         for ($x=0;$x<count($user->hobbies);$x++){
           $sql="INSERT INTO user_hobbies (hobbyname,userid) values(?,?)";
           $stmt=$conn->prepare($sql);
-          $stmt->bind_param("si", $hobbies[$x], $lastid);
+          $stmt->bind_param("si", $user->hobbies[$x], $lastid);
           if(!$stmt->execute()){
                echo "failed to insert the data in user_hobbies".$stmt->error;
           }
